@@ -26,13 +26,19 @@ server.post('/hubs', (req, res) => {
     //get the hub data from the request 
     const hubData = req.body;
     //add hub to database
-    hubsModel.add(hubData)
-    .then(hub => {
-        res.json(hub);
-    })
-    .catch(error => {
-        res.json({ message: 'error saving the hub' });
-    });
+
+    //validate databefore sending it NEVER TRUST THE CLIENT:
+    if(!hubData.name) {
+        res.status(400).json({ message: 'no name'});
+    }else{
+        hubsModel.add(hubData)
+        .then(hub => {
+            res.json(hub);
+        })
+        .catch(error => {
+            res.json({ message: 'error saving the hub' });
+        });
+    }
 });
 
 server.delete(`/hubs/:id`, (req, res) => {
