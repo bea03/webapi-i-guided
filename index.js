@@ -35,6 +35,17 @@ server.post('/hubs', (req, res) => {
     });
 });
 
+server.delete(`/hubs/:id`, (req, res) => {
+    const id = req.params.id;
+
+    hubsModel.remove(id)
+    .then(hub => {
+        res.json(hub);
+    })
+    .catch(error => {
+        res.json({ message: 'error deleting the hub' })
+    })
+})
 
 const port = 8000;
 server.listen(port, () => console.log(`\n** API on port ${port} **\n`));
